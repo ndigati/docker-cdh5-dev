@@ -12,6 +12,10 @@ ENV LEIN_ROOT=true
 RUN chmod +x /bin/lein
 RUN lein --version
 
+#Drake
+ADD https://raw.githubusercontent.com/Factual/drake/master/bin/drake /bin/drake
+RUN chmod 755 /bin/drake
+
 RUN gem install bundler --no-rdoc --no-ri
 
 ADD bootstrap.sh /etc/my_init.d/099_bootstrap
