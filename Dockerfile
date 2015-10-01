@@ -4,13 +4,20 @@ FROM factual/docker-cdh5-base
 RUN apt-add-repository ppa:brightbox/ruby-ng
 
 
-RUN apt-get update && apt-get install -y git-core default-jdk maven ruby2.2 ruby2.2-dev nodejs npm build-essential zlib1g-dev libcurl4-gnutls-dev libncurses5-dev ldap-utils libpam-ldap libnss-ldap nslcd
+RUN apt-get update
+RUN apt-get install -y git-core default-jdk maven build-essential zlib1g-dev libcurl4-gnutls-dev libncurses5-dev 
+RUN apt-get install -y ruby2.2 ruby2.2-dev nodejs npm
+RUN apt-get install -y ldap-utils libpam-ldap libnss-ldap nslcd
+RUN apt-get install -y spark-core spark-python hive
+
 
 #lein
 ADD https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein /bin/lein
 ENV LEIN_ROOT=true
 RUN chmod +x /bin/lein
 RUN lein --version
+
+
 
 #Drake
 ADD https://raw.githubusercontent.com/Factual/drake/master/bin/drake /bin/drake
