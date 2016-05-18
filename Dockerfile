@@ -20,6 +20,8 @@ RUN cd /opt/ && tar xzf ../apache-maven-$MAVEN_VERSION-bin.tar.gz
 ENV "PATH=$PATH:/opt/apache-maven-$MAVEN_VERSION/bin"
 RUN echo $PATH >> /etc/profile
 
+RUN update-ca-certificates -f
+
 #lein
 ADD https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein /bin/lein
 ENV LEIN_ROOT=true
