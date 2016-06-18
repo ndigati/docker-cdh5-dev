@@ -5,7 +5,7 @@ RUN apt-add-repository ppa:brightbox/ruby-ng
 
 ENV MAVEN_VERSION=3.3.9
 RUN apt-get update
-RUN apt-get install -y git-core build-essential zlib1g-dev libcurl4-gnutls-dev libncurses5-dev 
+RUN apt-get install -y git-core build-essential unzip zlib1g-dev libcurl4-gnutls-dev libncurses5-dev 
 RUN apt-get install -y ruby2.3 ruby2.3-dev nodejs npm
 RUN gem install bundler --no-rdoc --no-ri
 
