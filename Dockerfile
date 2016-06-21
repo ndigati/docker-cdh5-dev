@@ -17,8 +17,7 @@ RUN apt-get install -y openjdk-8-jdk-headless
 #maven
 ADD http://apache.cs.utah.edu/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz .
 RUN cd /opt/ && tar xzf ../apache-maven-$MAVEN_VERSION-bin.tar.gz
-ENV "PATH=$PATH:/opt/apache-maven-$MAVEN_VERSION/bin"
-RUN echo $PATH >> /etc/profile
+RUN echo "PATH=$PATH:/opt/apache-maven-$MAVEN_VERSION/bin" >> /etc/profile
 
 RUN update-ca-certificates -f
 
