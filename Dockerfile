@@ -27,7 +27,7 @@ RUN update-ca-certificates -f
 #lein
 ADD https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein /bin/lein
 ENV LEIN_ROOT=true
-RUN chmod +x /bin/lein
+RUN chmod 755 /bin/lein
 RUN lein --version
 
 #Drake
