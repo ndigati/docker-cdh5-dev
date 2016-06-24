@@ -6,13 +6,16 @@ RUN apt-add-repository ppa:brightbox/ruby-ng
 ENV MAVEN_VERSION=3.3.9
 RUN apt-get update
 RUN apt-get install -y git-core build-essential unzip zlib1g-dev libcurl4-gnutls-dev libncurses5-dev 
+RUN apt-get install -y vim emacs
 RUN apt-get install -y ruby2.3 ruby2.3-dev nodejs npm
 RUN gem install bundler --no-rdoc --no-ri
 
 RUN apt-get install -y ldap-utils libpam-ldap libnss-ldap nslcd
-RUN apt-get install -y spark-core spark-python hive
 
 RUN apt-get install -y openjdk-8-jdk-headless
+
+RUN apt-get install -y spark-core spark-python hive
+
 
 #maven
 ADD http://apache.cs.utah.edu/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz .
@@ -35,7 +38,7 @@ RUN chmod 755 /bin/drake
 #cleanup
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
+RUN rm /apache-maven-*.gz
 
 ADD bootstrap.sh /etc/my_init.d/099_bootstrap
 
