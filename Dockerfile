@@ -20,7 +20,7 @@ RUN apt-get install -y spark-core spark-python hive
 #maven
 ADD http://apache.cs.utah.edu/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz .
 RUN cd /opt/ && tar xzf ../apache-maven-$MAVEN_VERSION-bin.tar.gz
-RUN echo "PATH=$PATH:/opt/apache-maven-$MAVEN_VERSION/bin" >> /etc/profile
+RUN ln -s /opt/apache-maven-$MAVEN_VERSION/bin/mvn /usr/bin/mvn
 
 RUN update-ca-certificates -f
 
@@ -30,9 +30,11 @@ ENV LEIN_ROOT=true
 RUN chmod 755 /bin/lein
 RUN lein --version
 
+
 #Drake
 ADD https://raw.githubusercontent.com/Factual/drake/master/bin/drake /bin/drake
 RUN chmod 755 /bin/drake
+
 
 
 #cleanup
