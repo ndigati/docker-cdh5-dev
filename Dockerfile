@@ -35,7 +35,7 @@ RUN lein --version
 
 #thrift
 ADD http://archive.apache.org/dist/thrift/$THRIFT_VERSION/thrift-$THRIFT_VERSION.tar.gz .
-RUN tar xzf thrift-$THRIFT_VERSION.tar.gz && cd thrift-$THRIFT_VERSION && ./configure && make install; exit 0
+RUN tar xzf thrift-$THRIFT_VERSION.tar.gz && cd thrift-$THRIFT_VERSION && ./configure --without-ruby --without-cpp --without-nodejs --without-python && make install
 RUN rm -rf thrift-$THRIFT_VERSION*
 
 #Drake
