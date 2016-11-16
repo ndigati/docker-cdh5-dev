@@ -5,7 +5,7 @@ RUN apt-add-repository ppa:brightbox/ruby-ng
 
 ENV MAVEN_VERSION=3.3.9
 ENV THRIFT_VERSION=0.9.2
-
+ENV SPARK_VERSION=2.0.2-bin-hadoop2.6
 RUN apt-get update
 RUN apt-get install -y git-core build-essential automake unzip zlib1g-dev libcurl4-gnutls-dev libncurses5-dev bison flex libboost-all-dev libevent-dev
 RUN apt-get install -y vim emacs
@@ -15,7 +15,6 @@ RUN gem install bundler --no-rdoc --no-ri
 RUN apt-get install -y ldap-utils libpam-ldap libnss-ldap nslcd
 
 RUN apt-get install -y openjdk-8-jdk-headless ant
-RUN apt-get install -y spark-core spark-python
 
 RUN apt-get upgrade -y
 
@@ -41,6 +40,11 @@ RUN rm -rf thrift-$THRIFT_VERSION*
 ADD https://raw.githubusercontent.com/Factual/drake/master/bin/drake /bin/drake
 RUN chmod 755 /bin/drake
 
+#Spark
+ADD http://d3kbcqa49mib13.cloudfront.net/spark-$SPARK_VERSION.tgz .
+RUN cd /opt && tar xzf ../spark-$SPARK_VERSION.tgz && mv spark-$SPARK_VERSION spark
+ENV PATH=/opt/spark/bin:$PATH
+
 #man
 RUN apt-get purge -y manpages manpages-dev man-db
 RUN apt-get install -y manpages manpages-dev man-db
@@ -49,5 +53,6 @@ RUN apt-get install -y manpages manpages-dev man-db
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN rm /apache-maven-*.gz
-
+RUN rm /spark*.tgz
 ADD bootstrap.sh /etc/my_init.d/099_bootstrap
+
