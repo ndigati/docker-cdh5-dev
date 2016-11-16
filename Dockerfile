@@ -44,6 +44,9 @@ RUN chmod 755 /bin/drake
 ADD http://d3kbcqa49mib13.cloudfront.net/spark-$SPARK_VERSION.tgz .
 RUN cd /opt && tar xzf ../spark-$SPARK_VERSION.tgz && mv spark-$SPARK_VERSION spark
 ENV PATH=/opt/spark/bin:$PATH
+RUN echo 'PATH=/opt/spark/bin:$PATH' >> /etc/profile
+RUN echo 'export HADOOP_CONF_DIR=/etc/hadoop/conf' >> /etc/profile
+RUN mkdir -p /etc/spark/ && ln -s /opt/spark/conf /etc/spark/conf
 
 #man
 RUN apt-get purge -y manpages manpages-dev man-db
