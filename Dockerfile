@@ -6,7 +6,7 @@ RUN apt-add-repository ppa:brightbox/ruby-ng
 ENV MAVEN_VERSION=3.3.9
 ENV THRIFT_VERSION=0.9.2
 ENV SPARK_VERSION=2.0.2-bin-hadoop2.6
-ENV SPARK_PATH=/opt/spark
+ENV SPARK_HOME=/opt/spark
 ENV MAVEN_PATH=/opt/apache-maven
 ENV HADOOP_CONF_DIR=/etc/hadoop/conf
 
@@ -46,10 +46,11 @@ RUN chmod 755 /bin/drake
 
 #Spark
 ADD http://d3kbcqa49mib13.cloudfront.net/spark-$SPARK_VERSION.tgz /tmp/
-RUN cd /tmp/ && tar xzf spark-$SPARK_VERSION.tgz && mv spark-$SPARK_VERSION $SPARK_PATH 
-RUN echo "export PATH=$SPARK_PATH/bin:\$PATH" >> /etc/profile
+RUN cd /tmp/ && tar xzf spark-$SPARK_VERSION.tgz && mv spark-$SPARK_VERSION $SPARK_HOME 
+RUN echo "export PATH=$SPARK_HOME/bin:\$PATH" >> /etc/profile
 RUN echo "export HADOOP_CONF_DIR=$HADOOP_CONF_DIR" >> /etc/profile
-RUN mkdir -p /etc/spark/ && ln -s $SPARK_PATH/conf /etc/spark/conf
+RUN echo "export SPARK_HOME=$SPARK_HOME" >> /etc/profile
+RUN mkdir -p /etc/spark/ && ln -s $SPARK_HOME/conf /etc/spark/conf
 
 #man
 RUN apt-get purge -y manpages manpages-dev man-db
