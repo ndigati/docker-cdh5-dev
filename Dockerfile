@@ -11,7 +11,7 @@ ENV MAVEN_PATH=/opt/apache-maven
 ENV HADOOP_CONF_DIR=/etc/hadoop/conf
 
 RUN apt-get update
-RUN apt-get install -y git-core sudo build-essential automake unzip zlib1g-dev libcurl4-gnutls-dev libncurses5-dev bison flex libboost-all-dev libevent-dev
+RUN apt-get install -y git-core sudo build-essential automake unzip zlib1g-dev liblzo2-dev libcurl4-gnutls-dev libncurses5-dev bison flex libboost-all-dev libevent-dev
 RUN apt-get install -y vim emacs
 RUN apt-get install -y ruby2.3 ruby2.3-dev nodejs npm python3 python3-dev
 RUN gem install bundler --no-rdoc --no-ri
