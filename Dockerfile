@@ -1,11 +1,11 @@
 FROM factual/docker-cdh5-base
 
-# for ruby 2.3
+# for ruby 2.4
 RUN apt-add-repository ppa:brightbox/ruby-ng
 
 ENV MAVEN_VERSION=3.3.9
 ENV THRIFT_VERSION=0.9.2
-ENV SPARK_VERSION=2.0.2-bin-hadoop2.6
+ENV SPARK_VERSION=2.1.0-bin-hadoop2.6
 ENV SPARK_HOME=/opt/spark
 ENV MAVEN_PATH=/opt/apache-maven
 ENV HADOOP_CONF_DIR=/etc/hadoop/conf
@@ -13,7 +13,7 @@ ENV HADOOP_CONF_DIR=/etc/hadoop/conf
 RUN apt-get update
 RUN apt-get install -y git-core sudo build-essential automake unzip zlib1g-dev liblzo2-dev libcurl4-gnutls-dev libncurses5-dev bison flex libboost-all-dev libevent-dev
 RUN apt-get install -y vim emacs
-RUN apt-get install -y ruby2.3 ruby2.3-dev nodejs npm python3 python3-dev
+RUN apt-get install -y ruby2.4 ruby2.4-dev nodejs npm python3 python3-dev
 RUN gem install bundler --no-rdoc --no-ri
 
 RUN apt-get install -y ldap-utils libpam-ldap libnss-ldap nslcd
