@@ -23,7 +23,8 @@ RUN apt-get install -y openjdk-8-jdk-headless ant
 RUN apt-get upgrade -y
 
 #maven
-ADD http://apache.mirrors.lucidnetworks.net/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSRION-bin.tar.gz /tmp/
+
+ADD http://apache.mirrors.lucidnetworks.net/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz /tmp/
 RUN cd /tmp/ && tar xzf apache-maven-$MAVEN_VERSION-bin.tar.gz && mv apache-maven-$MAVEN_VERSION $MAVEN_PATH
 RUN ln -s $MAVEN_PATH/bin/mvn /usr/bin/mvn
 
