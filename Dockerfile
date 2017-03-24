@@ -23,7 +23,7 @@ RUN apt-get install -y openjdk-8-jdk-headless ant
 RUN apt-get upgrade -y
 
 #maven
-ADD http://apache.cs.utah.edu/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz /tmp/
+ADD http://apache.mirrors.lucidnetworks.net/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSRION-bin.tar.gz /tmp/
 RUN cd /tmp/ && tar xzf apache-maven-$MAVEN_VERSION-bin.tar.gz && mv apache-maven-$MAVEN_VERSION $MAVEN_PATH
 RUN ln -s $MAVEN_PATH/bin/mvn /usr/bin/mvn
 
@@ -36,7 +36,7 @@ RUN chmod 755 /bin/lein
 RUN lein --version
 
 #thrift
-ADD http://archive.apache.org/dist/thrift/$THRIFT_VERSION/thrift-$THRIFT_VERSION.tar.gz /tmp/ 
+ADD http://archive.apache.org/dist/thrift/$THRIFT_VERSION/thrift-$THRIFT_VERSION.tar.gz /tmp/
 RUN cd /tmp/ && tar xzf thrift-$THRIFT_VERSION.tar.gz && cd thrift-$THRIFT_VERSION && ./configure --without-ruby --without-cpp --without-nodejs --without-python && make install
 RUN rm -rf thrift-$THRIFT_VERSION*
 
@@ -46,11 +46,15 @@ RUN chmod 755 /bin/drake
 
 #Spark
 ADD http://d3kbcqa49mib13.cloudfront.net/spark-$SPARK_VERSION.tgz /tmp/
-RUN cd /tmp/ && tar xzf spark-$SPARK_VERSION.tgz && mv spark-$SPARK_VERSION $SPARK_HOME 
+RUN cd /tmp/ && tar xzf spark-$SPARK_VERSION.tgz && mv spark-$SPARK_VERSION $SPARK_HOME
 RUN echo "export PATH=$SPARK_HOME/bin:\$PATH" >> /etc/profile
 RUN echo "export HADOOP_CONF_DIR=$HADOOP_CONF_DIR" >> /etc/profile
 RUN echo "export SPARK_HOME=$SPARK_HOME" >> /etc/profile
 RUN mkdir -p /etc/spark/ && ln -s $SPARK_HOME/conf /etc/spark/conf
+
+#clean out typically conflicting files
+RUN find /usr/lib/ -name "httpclient-*.jar" -type f -exec rm {} \;
+RUN find /usr/lib/ -name "httpcore-*.jar" -type f -exec rm {} \;
 
 #man
 RUN apt-get purge -y manpages manpages-dev man-db
