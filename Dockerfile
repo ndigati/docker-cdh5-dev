@@ -5,7 +5,7 @@ RUN apt-add-repository ppa:brightbox/ruby-ng
 
 ENV MAVEN_VERSION=3.3.9
 ENV THRIFT_VERSION=0.9.2
-ENV SPARK_VERSION=2.1.1-bin-hadoop2.6
+ENV SPARK_VERSION=2.2.0-bin-hadoop2.6
 ENV SPARK_HOME=/opt/spark
 ENV MAVEN_PATH=/opt/apache-maven
 ENV HADOOP_CONF_DIR=/etc/hadoop/conf
