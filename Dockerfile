@@ -5,8 +5,10 @@ RUN apt-add-repository ppa:brightbox/ruby-ng
 
 ENV MAVEN_VERSION=3.3.9
 ENV THRIFT_VERSION=0.9.2
-ENV SPARK_VERSION=2.2.0-bin-hadoop2.6
+ENV SPARK_VERSION=2.1.0-bin-hadoop2.6
 ENV SPARK_HOME=/opt/spark
+ENV HIVE_VERSION=2.3.2
+ENV HIVE_HOME=/opt/hive
 ENV MAVEN_PATH=/opt/apache-maven
 ENV HADOOP_CONF_DIR=/etc/hadoop/conf
 
@@ -23,8 +25,7 @@ RUN apt-get install -y openjdk-8-jdk-headless ant
 RUN apt-get upgrade -y
 
 #maven
-
-ADD http://apache.mirrors.lucidnetworks.net/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz /tmp/
+ADD http://apache.cs.utah.edu/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz /tmp/
 RUN cd /tmp/ && tar xzf apache-maven-$MAVEN_VERSION-bin.tar.gz && mv apache-maven-$MAVEN_VERSION $MAVEN_PATH
 RUN ln -s $MAVEN_PATH/bin/mvn /usr/bin/mvn
 
@@ -51,8 +52,14 @@ RUN cd /tmp/ && tar xzf spark-$SPARK_VERSION.tgz && mv spark-$SPARK_VERSION $SPA
 RUN echo "export PATH=$SPARK_HOME/bin:\$PATH" >> /etc/profile
 RUN echo "export HADOOP_CONF_DIR=$HADOOP_CONF_DIR" >> /etc/profile
 RUN echo "export SPARK_HOME=$SPARK_HOME" >> /etc/profile
-RUN echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/hadoop/lib/native/" >> /etc/profile
 RUN mkdir -p /etc/spark/ && ln -s $SPARK_HOME/conf /etc/spark/conf
+
+#hive
+ADD http://apache.cs.utah.edu/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz /tmp/
+RUN cd /tmp/ && tar xzf apache-hive-$HIVE_VERSION-bin.tar.gz && mv apache-hive-$HIVE_VERSION-bin $HIVE_HOME
+RUN echo "export PATH=$HIVE_HOME/bin:\$PATH" >> /etc/profile
+RUN echo "export HIVE_HOME=$HIVE_HOME" >> /etc/profile
+
 
 #clean out typically conflicting files
 RUN find /usr/lib/ -name "httpclient-*.jar" -type f -exec rm {} \;
