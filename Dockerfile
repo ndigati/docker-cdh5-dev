@@ -3,14 +3,14 @@ FROM factual/docker-cdh5-base
 # for ruby 2.4
 RUN apt-add-repository ppa:brightbox/ruby-ng
 
-ENV MAVEN_VERSION=3.3.9
-ENV THRIFT_VERSION=0.9.2
-ENV SPARK_VERSION=2.1.0-bin-hadoop2.6
-ENV SPARK_HOME=/opt/spark
-ENV HIVE_VERSION=2.3.2
-ENV HIVE_HOME=/opt/hive
-ENV MAVEN_PATH=/opt/apache-maven
-ENV HADOOP_CONF_DIR=/etc/hadoop/conf
+ARG MAVEN_VERSION=3.3.9
+ARG THRIFT_VERSION=0.9.2
+ARG SPARK_VERSION=2.2.0-bin-hadoop2.6
+ARG SPARK_HOME=/opt/spark
+ARG HIVE_VERSION=2.3.2
+ARG HIVE_HOME=/opt/hive
+ARG MAVEN_PATH=/opt/apache-maven
+ARG HADOOP_CONF_DIR=/etc/hadoop/conf
 
 RUN apt-get update
 RUN apt-get install -y git-core sudo build-essential automake unzip zlib1g-dev liblzo2-dev libcurl4-gnutls-dev libncurses5-dev bison flex libboost-all-dev libevent-dev
@@ -59,7 +59,9 @@ ADD http://apache.cs.utah.edu/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-
 RUN cd /tmp/ && tar xzf apache-hive-$HIVE_VERSION-bin.tar.gz && mv apache-hive-$HIVE_VERSION-bin $HIVE_HOME
 RUN echo "export PATH=$HIVE_HOME/bin:\$PATH" >> /etc/profile
 RUN echo "export HIVE_HOME=$HIVE_HOME" >> /etc/profile
-
+RUN mkdir -p /etc/hive/ && ln -s $HIVE_HOME/conf /etc/hive/conf
+RUN mv /etc/hive/conf/hive-default.xml.template /etc/hive/conf/hive-default.xml
+RUN mv /etc/hive/conf/hive-env.sh.template /etc/hive/conf/hive-env.sh
 
 #clean out typically conflicting files
 RUN find /usr/lib/ -name "httpclient-*.jar" -type f -exec rm {} \;
