@@ -3,7 +3,7 @@ FROM factual/docker-cdh5-base
 # for ruby 2.4
 RUN apt-add-repository ppa:brightbox/ruby-ng
 
-ARG MAVEN_VERSION=3.3.9
+ARG MAVEN_VERSION=3.5.2
 ARG THRIFT_VERSION=0.9.2
 ARG SPARK_VERSION=2.2.0-bin-hadoop2.6
 ARG SPARK_HOME=/opt/spark
@@ -25,7 +25,7 @@ RUN apt-get install -y openjdk-8-jdk-headless ant
 RUN apt-get upgrade -y
 
 #maven
-ADD http://apache.cs.utah.edu/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz /tmp/
+ADD http://apache.mirrors.tds.net/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz /tmp/
 RUN cd /tmp/ && tar xzf apache-maven-$MAVEN_VERSION-bin.tar.gz && mv apache-maven-$MAVEN_VERSION $MAVEN_PATH
 RUN ln -s $MAVEN_PATH/bin/mvn /usr/bin/mvn
 
