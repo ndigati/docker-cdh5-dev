@@ -25,7 +25,7 @@ RUN apt-get install -y openjdk-8-jdk-headless ant
 RUN apt-get upgrade -y
 
 #maven
-ADD http://apache.mirrors.tds.net/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz /tmp/
+ADD http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz /tmp/
 RUN cd /tmp/ && tar xzf apache-maven-$MAVEN_VERSION-bin.tar.gz && mv apache-maven-$MAVEN_VERSION $MAVEN_PATH
 RUN ln -s $MAVEN_PATH/bin/mvn /usr/bin/mvn
 
@@ -55,7 +55,7 @@ RUN echo "export SPARK_HOME=$SPARK_HOME" >> /etc/profile
 RUN mkdir -p /etc/spark/ && ln -s $SPARK_HOME/conf /etc/spark/conf
 
 #hive
-ADD http://apache.cs.utah.edu/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz /tmp/
+ADD http://archive.apache.org/dist/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz /tmp/
 RUN cd /tmp/ && tar xzf apache-hive-$HIVE_VERSION-bin.tar.gz && mv apache-hive-$HIVE_VERSION-bin $HIVE_HOME
 RUN echo "export PATH=$HIVE_HOME/bin:\$PATH" >> /etc/profile
 RUN echo "export HIVE_HOME=$HIVE_HOME" >> /etc/profile
