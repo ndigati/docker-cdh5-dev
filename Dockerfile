@@ -17,11 +17,24 @@ RUN apt-add-repository ppa:brightbox/ruby-ng
 
 RUN apt-get update
 RUN apt-get install -y git-core sudo build-essential automake unzip zlib1g-dev \
-                       liblzo2-dev libcurl4-gnutls-dev libncurses5-dev bison flex \
+                       liblzo2-dev libcurl4-gnutls-dev libncurses5-dev bison flex libpq-dev \
                        libboost-all-dev libevent-dev vim emacs \
-                       ruby2.4 ruby2.4-dev nodejs npm python3 python3-dev \
+                       ruby2.4 ruby2.4-dev uuid-runtime\
+                       nodejs npm \
+                       python3 python3-dev python3-pip \
                        ldap-utils libpam-ldap libnss-ldap nslcd \
-                       openjdk-8-jdk-headless ant
+                       s3cmd awscli \
+                       openjdk-8-jdk-headless ant \
+                       jq \
+                       virtualenv python3-venv python3-virtualenv
+
+RUN pip3 install --upgrade pip
+RUN pip3 install \
+    matplotlib \
+    numpy \
+    pandas \
+    scikit-learn \
+    scipy
 
 
 RUN gem install bundler --no-rdoc --no-ri
