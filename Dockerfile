@@ -8,6 +8,7 @@ ARG THRIFT_VERSION=0.9.2
 ARG SPARK_VERSION=2.2.0-bin-hadoop2.6
 ARG SPARK_HOME=/opt/spark
 ARG HIVE_VERSION=2.3.2
+ARG PRESTO_VERSION=0.190
 ARG HIVE_HOME=/opt/hive
 ARG MAVEN_PATH=/opt/apache-maven
 ARG HADOOP_CONF_DIR=/etc/hadoop/conf
@@ -62,6 +63,10 @@ RUN echo "export HIVE_HOME=$HIVE_HOME" >> /etc/profile
 RUN mkdir -p /etc/hive/ && ln -s $HIVE_HOME/conf /etc/hive/conf
 RUN mv /etc/hive/conf/hive-default.xml.template /etc/hive/conf/hive-default.xml
 RUN mv /etc/hive/conf/hive-env.sh.template /etc/hive/conf/hive-env.sh
+
+#presto
+ADD https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/$PRESTO_VERSION/presto-cli-$PRESTO_VERSION-executable.jar /usr/local/bin/presto
+RUN chmod 755 /usr/local/bin/presto
 
 #clean out typically conflicting files
 RUN find /usr/lib/ -name "httpclient-*.jar" -type f -exec rm {} \;
