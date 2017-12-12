@@ -1,11 +1,9 @@
 FROM factual/docker-cdh5-base
 
-# for ruby 2.4
-RUN apt-add-repository ppa:brightbox/ruby-ng
 
 ARG MAVEN_VERSION=3.5.2
 ARG THRIFT_VERSION=0.9.2
-ARG SPARK_VERSION=2.2.0-bin-hadoop2.6
+ARG SPARK_VERSION=2.2.1
 ARG SPARK_HOME=/opt/spark
 ARG HIVE_VERSION=2.3.2
 ARG PRESTO_VERSION=0.190
@@ -13,24 +11,28 @@ ARG HIVE_HOME=/opt/hive
 ARG MAVEN_PATH=/opt/apache-maven
 ARG HADOOP_CONF_DIR=/etc/hadoop/conf
 
+
+# for ruby 2.4
+RUN apt-add-repository ppa:brightbox/ruby-ng
+
 RUN apt-get update
-RUN apt-get install -y git-core sudo build-essential automake unzip zlib1g-dev liblzo2-dev libcurl4-gnutls-dev libncurses5-dev bison flex libboost-all-dev libevent-dev
-RUN apt-get install -y vim emacs
-RUN apt-get install -y ruby2.4 ruby2.4-dev nodejs npm python3 python3-dev
+RUN apt-get install -y git-core sudo build-essential automake unzip zlib1g-dev \
+                       liblzo2-dev libcurl4-gnutls-dev libncurses5-dev bison flex \
+                       libboost-all-dev libevent-dev vim emacs \
+                       ruby2.4 ruby2.4-dev nodejs npm python3 python3-dev \
+                       ldap-utils libpam-ldap libnss-ldap nslcd \
+                       openjdk-8-jdk-headless ant
+
+
 RUN gem install bundler --no-rdoc --no-ri
 
-RUN apt-get install -y ldap-utils libpam-ldap libnss-ldap nslcd
-
-RUN apt-get install -y openjdk-8-jdk-headless ant
-
 RUN apt-get upgrade -y
+RUN update-ca-certificates -f
 
 #maven
 ADD http://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz /tmp/
 RUN cd /tmp/ && tar xzf apache-maven-$MAVEN_VERSION-bin.tar.gz && mv apache-maven-$MAVEN_VERSION $MAVEN_PATH
 RUN ln -s $MAVEN_PATH/bin/mvn /usr/bin/mvn
-
-RUN update-ca-certificates -f
 
 #lein
 ADD https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein /bin/lein
@@ -48,8 +50,8 @@ ADD https://raw.githubusercontent.com/Factual/drake/master/bin/drake /bin/drake
 RUN chmod 755 /bin/drake
 
 #Spark
-ADD http://d3kbcqa49mib13.cloudfront.net/spark-$SPARK_VERSION.tgz /tmp/
-RUN cd /tmp/ && tar xzf spark-$SPARK_VERSION.tgz && mv spark-$SPARK_VERSION $SPARK_HOME
+ADD http://archive.apache.org/dist/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop2.6.tgz /tmp/
+RUN cd /tmp/ && tar xzf spark-$SPARK_VERSION-bin-hadoop2.6.tgz && mv spark-$SPARK_VERSION-bin-hadoop2.6 $SPARK_HOME
 RUN echo "export PATH=$SPARK_HOME/bin:\$PATH" >> /etc/profile
 RUN echo "export HADOOP_CONF_DIR=$HADOOP_CONF_DIR" >> /etc/profile
 RUN echo "export SPARK_HOME=$SPARK_HOME" >> /etc/profile
