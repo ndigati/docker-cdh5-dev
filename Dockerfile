@@ -1,16 +1,18 @@
 FROM factual/docker-cdh5-base
 
+ARG THRIFT_VERSION=0.9.2 \
+    PRESTO_VERSION=0.190 \
+    HIVE_VERSION=2.3.2 \
+    HIVE_HOME=/opt/hive \
+    MAVEN_VERSION=3.5.2 \
+    MAVEN_PATH=/opt/apache-maven
+    SPARK_VERSION=2.2.1 \
+    SPARK_HOME=/opt/spark
 
-ARG MAVEN_VERSION=3.5.2
-ARG THRIFT_VERSION=0.9.2
-ARG SPARK_VERSION=2.2.1
-ARG SPARK_HOME=/opt/spark
-ARG HIVE_VERSION=2.3.2
-ARG PRESTO_VERSION=0.190
-ARG HIVE_HOME=/opt/hive
-ARG MAVEN_PATH=/opt/apache-maven
-ARG HADOOP_CONF_DIR=/etc/hadoop/conf
-
+ENV SPARK_HOME=$SPARK_HOME \
+    HIVE_HOME=$HIVE_HOME \
+    MAVEN_PATH=$MAVEN_PATH \
+    PATH=$HIVE_HOME/bin:$SPARK_HOME/bin:$PATH
 
 # for ruby 2.4
 RUN apt-add-repository ppa:brightbox/ruby-ng
@@ -64,17 +66,12 @@ RUN chmod 755 /bin/drake
 
 #Spark
 ADD http://archive.apache.org/dist/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop2.6.tgz /tmp/
-RUN cd /tmp/ && tar xzf spark-$SPARK_VERSION-bin-hadoop2.6.tgz && mv spark-$SPARK_VERSION-bin-hadoop2.6 $SPARK_HOME
-RUN echo "export PATH=$SPARK_HOME/bin:\$PATH" >> /etc/profile
-RUN echo "export HADOOP_CONF_DIR=$HADOOP_CONF_DIR" >> /etc/profile
-RUN echo "export SPARK_HOME=$SPARK_HOME" >> /etc/profile
+RUN cd /tmp/ && tar xzf spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION.tgz && mv spark-$SPARK_VERSION-bin-hadoop$HADOOP_VERSION $SPARK_HOME
 RUN mkdir -p /etc/spark/ && ln -s $SPARK_HOME/conf /etc/spark/conf
 
 #hive
 ADD http://archive.apache.org/dist/hive/hive-$HIVE_VERSION/apache-hive-$HIVE_VERSION-bin.tar.gz /tmp/
 RUN cd /tmp/ && tar xzf apache-hive-$HIVE_VERSION-bin.tar.gz && mv apache-hive-$HIVE_VERSION-bin $HIVE_HOME
-RUN echo "export PATH=$HIVE_HOME/bin:\$PATH" >> /etc/profile
-RUN echo "export HIVE_HOME=$HIVE_HOME" >> /etc/profile
 RUN mkdir -p /etc/hive/ && ln -s $HIVE_HOME/conf /etc/hive/conf
 RUN mv /etc/hive/conf/hive-default.xml.template /etc/hive/conf/hive-default.xml
 RUN mv /etc/hive/conf/hive-env.sh.template /etc/hive/conf/hive-env.sh
