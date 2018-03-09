@@ -35,14 +35,6 @@ RUN pip3 install \
     scikit-learn \
     scipy
 
-<<<<<<< HEAD
-=======
-RUN gem install bundler --no-rdoc --no-ri
-
-RUN apt-get upgrade -y
-RUN update-ca-certificates -f
-
->>>>>>> cweinberg/master
 #maven
 ARG MAVEN_VERSION=3.5.2
 ARG MAVEN_PATH=/opt/apache-maven
