@@ -3,11 +3,16 @@ FROM factual/docker-cdh5-base
 # for ruby 2.4
 RUN apt-add-repository ppa:brightbox/ruby-ng
 
+# for updated postgres
+RUN add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main"
+RUN curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+
 RUN apt-get update && apt-get clean
 RUN apt-get install -y git-core sudo build-essential automake unzip zlib1g-dev \
                        liblzo2-dev libcurl4-gnutls-dev libncurses5-dev bison flex libpq-dev \
                        libboost-all-dev libevent-dev vim emacs \
                        ruby2.4 ruby2.4-dev uuid-runtime\
+                       postgresql-client-9.6 \
                        nodejs npm \
                        python3 python3-dev python3-pip \
                        ldap-utils libpam-ldap libnss-ldap nslcd \
@@ -30,6 +35,14 @@ RUN pip3 install \
     scikit-learn \
     scipy
 
+<<<<<<< HEAD
+=======
+RUN gem install bundler --no-rdoc --no-ri
+
+RUN apt-get upgrade -y
+RUN update-ca-certificates -f
+
+>>>>>>> cweinberg/master
 #maven
 ARG MAVEN_VERSION=3.5.2
 ARG MAVEN_PATH=/opt/apache-maven
