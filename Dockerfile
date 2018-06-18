@@ -96,3 +96,4 @@ RUN find /usr/lib/ -name "httpclient-*.jar" -type f -exec rm {} \; \
 
 ENV PATH="$HIVE_HOME/bin:$SPARK_HOME/bin:$PATH"
 COPY bootstrap.sh /etc/my_init.d/099_bootstrap
+VOLUME /var/lib/docker
