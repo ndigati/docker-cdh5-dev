@@ -85,16 +85,18 @@ ADD https://repo1.maven.org/maven2/com/facebook/presto/presto-cli/$PRESTO_VERSIO
 RUN chmod 755 /usr/local/bin/presto
 
 #clean out typically conflicting files
-RUN find /usr/lib/ -name "httpclient-*.jar" -type f -exec rm {} \;
-RUN find /usr/lib/ -name "httpcore-*.jar" -type f -exec rm {} \;
+RUN find /usr/lib/ -name "httpclient-*.jar" -o -name "httpcore-*.jar" -type f -exec rm {} \;
 
 #man
-RUN apt-get purge -y manpages manpages-dev man-db
-RUN apt-get install -y manpages manpages-dev man-db
+RUN apt-get purge   -y manpages manpages-dev man-db ; \
+    apt-get install -y manpages manpages-dev man-db ;
 
-#cleanup
-RUN apt-get clean
-RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+# Cleanup
+RUN apt-get clean .                                 && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    
+VOLUME /var/lib/docker
+
 ADD bootstrap.sh /etc/my_init.d/099_bootstrap
 
 
