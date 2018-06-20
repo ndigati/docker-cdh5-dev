@@ -70,7 +70,7 @@ ENV SPARK_HOME=/opt/spark
 RUN mkdir -p $SPARK_HOME \
   && curl -fsSL http://archive.apache.org/dist/spark/spark-$SPARK_VERSION/spark-$SPARK_VERSION-bin-hadoop2.6.tgz \
     | tar xz -C /tmp/ \
-  && mv /tmp/spark-$SPARK_VERSION-bin-hadoop2.6 $SPARK_HOME \
+  && rm -rf $SPARK_HOME && mv /tmp/spark-$SPARK_VERSION-bin-hadoop2.6 $SPARK_HOME \
   && mkdir -p /etc/spark/ \
   && ln -s $SPARK_HOME/conf /etc/spark/conf
 
