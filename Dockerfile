@@ -1,6 +1,6 @@
 FROM factual/docker-cdh5-base
 
-ENV HADOOP_CONF_DIR=/etc/haddop/conf
+ENV HADOOP_CONF_DIR=/etc/hadoop/conf
 
 RUN apt-add-repository ppa:brightbox/ruby-ng \
   && add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" \
